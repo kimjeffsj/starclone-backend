@@ -10,6 +10,7 @@ import { InitializeDB } from "./config/database";
 
 // Routers
 import { authRouter } from "./features/auth";
+import { postRouter } from "./features/posts";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ InitializeDB()
 
 // Routes
 app.use("/api/auth", authRouter);
+app.use("/api/posts", postRouter);
 
 // Base routes
 app.get("/", (req, res) => {

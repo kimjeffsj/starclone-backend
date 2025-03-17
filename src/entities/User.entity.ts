@@ -4,10 +4,12 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import * as bcrypt from "bcryptjs";
+import { Post } from "./Post.entity";
 
 @Entity("users")
 export class User {
@@ -42,6 +44,9 @@ export class User {
 
   @Column({ default: false })
   isPrivate!: boolean;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts?: Post[];
 
   @CreateDateColumn()
   createdAt!: Date;
