@@ -1,21 +1,33 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
 import "reflect-metadata";
-import { AppDataSource } from "./config/database";
+
 import dotenv from "dotenv";
+
+import { InitializeDB } from "./config/database";
+
+// Routers
+import { authRouter } from "./features/auth";
 
 dotenv.config();
 
 const app = express();
 
 // middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "*",
+    credentials: true,
+  })
+);
 app.use(helmet());
 app.use(express.json());
+app.use(cookieParser());
 
 // Connect db
-AppDataSource.initialize()
+InitializeDB()
   .then(() => {
     console.log("Data Source has been initialized!");
   })
@@ -24,6 +36,9 @@ AppDataSource.initialize()
   });
 
 // Routes
+app.use("/api/auth", authRouter);
+
+// Base routes
 app.get("/", (req, res) => {
   res.send("Instagram Clone API is running");
 });
