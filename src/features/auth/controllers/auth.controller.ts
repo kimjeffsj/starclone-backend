@@ -4,7 +4,7 @@ import {
   loginSchema,
   registerSchema,
 } from "../validations/auth.schema";
-import { ValidationError } from "@/utils/errors.utils";
+import { UnauthorizedError, ValidationError } from "@/utils/errors.utils";
 import { authService } from "..";
 
 export class AuthController {
@@ -79,8 +79,7 @@ export class AuthController {
       }
 
       if (!req.user || !req.user.id) {
-        res.status(401).json({ message: "Not authenticated" });
-        return;
+        throw new UnauthorizedError("Not Authenticated");
       }
 
       await authService.changePassword(req.user.id, validationResult.data, res);

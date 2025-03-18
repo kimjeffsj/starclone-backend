@@ -12,4 +12,32 @@ const postController = new PostController();
  */
 router.post("/", authenticate(), postController.createPost);
 
+/**
+ * @route   GET /posts
+ * @desc    Get posts (feed or by user)
+ * @access  Private
+ */
+router.get("/", authenticate(), postController.getPosts);
+
+/**
+ * @route   GET /posts/:id
+ * @desc    Get post by ID
+ * @access  Private
+ */
+router.get("/:id", authenticate(), postController.getPostById);
+
+/**
+ * @route   POST /posts/:id
+ * @desc    Update post
+ * @access  Private
+ */
+router.post("/:id", authenticate(), postController.updatePost);
+
+/**
+ * @route   DELETE /posts/:id
+ * @desc    Delete post
+ * @access  Private
+ */
+router.delete("/:id", authenticate(), postController.deletePost);
+
 export default router;
