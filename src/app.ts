@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import "reflect-metadata";
+import { errorHandler } from "./utils/errors.utils";
 
 import dotenv from "dotenv";
 
@@ -46,6 +47,9 @@ app.use("/api/media", mediaRouter);
 app.get("/", (req, res) => {
   res.send("Instagram Clone API is running");
 });
+
+// Error
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

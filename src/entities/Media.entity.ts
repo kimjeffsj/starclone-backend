@@ -42,6 +42,12 @@ export class Media {
   @Column({ nullable: true })
   duration?: number;
 
+  @Column({ default: 0 })
+  order!: number;
+
+  @Column({ nullable: true })
+  createdBy?: string;
+
   @CreateDateColumn()
   createdAt!: Date;
 }

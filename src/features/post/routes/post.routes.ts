@@ -40,4 +40,11 @@ router.post("/:id", authenticate(), postController.updatePost);
  */
 router.delete("/:id", authenticate(), postController.deletePost);
 
+/**
+ * @route   PUT /posts/:id/media-order
+ * @desc    Update media order in post
+ * @access  Private
+ */
+router.put("/:id/media-order", authenticate(), postController.updateMediaOrder);
+
 export default router;

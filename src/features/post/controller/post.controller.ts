@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   createPostSchema,
   getPostsQuerySchema,
+  mediaOrderSchema,
   updatePostSchema,
 } from "../validations/post.schema";
 import {
@@ -32,7 +33,7 @@ export class PostController {
 
       res.status(201).json({
         message: "New post created successfully",
-        newPost,
+        post: newPost,
       });
       return;
     } catch (error) {
@@ -130,6 +131,47 @@ export class PostController {
         post: updatedPost,
       });
       return;
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // Update media order
+  updateMediaOrder = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      if (!req.user || !req.user.id) {
+        throw new UnauthorizedError("Not authenticated");
+      }
+
+      const { id } = req.params;
+
+      const validationResult = mediaOrderSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        throw new ValidationError(validationResult.error.format());
+      }
+
+      // Check ownership of the post
+      const checkAuthor = await postService.checkPostAuthor(id, req.user.id);
+      if (!checkAuthor) {
+        throw new ForbiddenError(
+          "Update failed, you are not author of this post"
+        );
+      }
+
+      // Order update
+      const updatedPost = await postService.updateMediaOrder(
+        id,
+        validationResult.data
+      );
+
+      res.status(200).json({
+        message: "Media order updated successfully",
+        post: updatedPost,
+      });
     } catch (error) {
       next(error);
     }

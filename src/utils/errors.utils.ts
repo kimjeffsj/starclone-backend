@@ -56,10 +56,11 @@ export const errorHandler = (
   let errors = err.errors || null;
 
   if (err instanceof ValidationError) {
-    return res.status(statusCode).json({
+    res.status(statusCode).json({
       message,
       errors,
     });
+    return;
   }
 
   // TypeORM Error handling
@@ -82,5 +83,5 @@ export const errorHandler = (
     response.stack = err.stack;
   }
 
-  return res.status(statusCode).json(response);
+  res.status(statusCode).json(response);
 };
