@@ -4,10 +4,12 @@ import {
   Entity,
   Index,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User.entity";
+import { Media } from "./Media.entity";
 
 @Entity("posts")
 export class Post {
@@ -22,6 +24,9 @@ export class Post {
 
   @Column({ nullable: true })
   location?: string;
+
+  @OneToMany(() => Media, (media) => media.post, { cascade: true, eager: true })
+  media!: Media[];
 
   @Index()
   @CreateDateColumn()

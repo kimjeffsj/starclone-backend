@@ -1,4 +1,4 @@
-import postRoutes from "../posts/routes/post.routes";
+import postRoutes from "./routes/post.routes";
 import { PostController } from "./controller/post.controller";
 import { PostService } from "./services/post.service";
 

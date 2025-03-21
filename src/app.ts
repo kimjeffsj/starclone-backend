@@ -10,7 +10,8 @@ import { InitializeDB } from "./config/database";
 
 // Routers
 import { authRouter } from "./features/auth";
-import { postRouter } from "./features/posts";
+import { postRouter } from "./features/post";
+import { mediaRouter } from "./features/media";
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ InitializeDB()
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/media", mediaRouter);
 
 // Base routes
 app.get("/", (req, res) => {
