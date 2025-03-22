@@ -60,7 +60,7 @@ export const uploadImage = async (
     Bucket: bucketName,
     Key: fileName,
     Body: imageBuffer,
-    contentType: file.mimetype,
+    ContentType: resizeOptions ? "image/webp" : file.mimetype,
   };
 
   const command = new PutObjectCommand(uploadParams);
@@ -73,7 +73,7 @@ export const uploadImage = async (
   }
 
   // Completed Url
-  const mediaUrl = `https://${bucketName}.s3.amazonaws.com/${fileName}`;
+  const mediaUrl = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 
   return {
     mediaUrl,

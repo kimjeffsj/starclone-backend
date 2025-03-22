@@ -6,11 +6,18 @@ export const uploadMediaSchema = z.object({
     errorMap: () => ({ message: "Type must be either 'profile' or 'post'" }),
   }),
   resize: z
-    .object({
-      width: z.number().optional(),
-      height: z.number().optional(),
-      quality: z.number().min(1).max(100).optional(),
-    })
+    .preprocess(
+      (val) => {
+        // 문자열로 전송된 경우 JSON으로 파싱
+        if (typeof val === "string") return JSON.parse(val);
+        return val;
+      },
+      z.object({
+        width: z.coerce.number().optional(),
+        height: z.coerce.number().optional(),
+        quality: z.coerce.number().min(1).max(100).optional(),
+      })
+    )
     .optional(),
 });
 
