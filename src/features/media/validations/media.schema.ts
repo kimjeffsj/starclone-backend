@@ -8,7 +8,6 @@ export const uploadMediaSchema = z.object({
   resize: z
     .preprocess(
       (val) => {
-        // 문자열로 전송된 경우 JSON으로 파싱
         if (typeof val === "string") return JSON.parse(val);
         return val;
       },

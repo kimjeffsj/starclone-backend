@@ -83,6 +83,7 @@ export class PostService {
     const queryBuilder = this.postRepository
       .createQueryBuilder("post")
       .leftJoinAndSelect("post.user", "user")
+      .leftJoinAndSelect("post.media", "media")
       .take(limit)
       .skip(skip)
       .orderBy(`post.${sortBy}`, order === "asc" ? "ASC" : "DESC");
@@ -292,8 +293,44 @@ export class PostService {
 
   // Delete post
   async deletePost(postId: string) {
-    await this.postRepository.delete(postId);
-    return true;
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const post = await queryRunner.manager.findOne(Post, {
+        where: { id: postId },
+        relations: ["media"],
+      });
+
+      if (!post) {
+        throw new NotFoundError("Post not found");
+      }
+
+      // Delete media from S3
+      if (post.media && post.media.length > 0) {
+        for (const media of post.media) {
+          try {
+            await deleteMedia(media.mediaUrl);
+            if (media.thumbnailUrl) {
+              await deleteMedia(media.thumbnailUrl);
+            }
+          } catch (error) {
+            console.error("Failed to delete file from S3: ", error);
+          }
+        }
+      }
+
+      await queryRunner.manager.remove(post);
+
+      await queryRunner.commitTransaction();
+      return true;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   // Check author of the post
