@@ -13,6 +13,7 @@ import { InitializeDB } from "./config/database";
 import { authRouter } from "./features/auth";
 import { postRouter } from "./features/post";
 import { mediaRouter } from "./features/media";
+import { likeRouter } from "./features/like";
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ InitializeDB()
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/media", mediaRouter);
+app.use("/api/likes", likeRouter);
 
 // Base routes
 app.get("/", (req, res) => {

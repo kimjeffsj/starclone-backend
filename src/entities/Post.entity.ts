@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import { User } from "./User.entity";
 import { Media } from "./Media.entity";
+import { Like } from "./Like.entity";
 
 @Entity("posts")
 export class Post {
@@ -27,6 +28,12 @@ export class Post {
 
   @OneToMany(() => Media, (media) => media.post, { cascade: true, eager: true })
   media!: Media[];
+
+  @OneToMany(() => Like, (like) => like.post)
+  likes!: Like[];
+
+  @Column({ default: 0 })
+  likeCount!: number;
 
   @Index()
   @CreateDateColumn()

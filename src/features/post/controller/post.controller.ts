@@ -12,6 +12,7 @@ import {
   ValidationError,
 } from "@/utils/errors.utils";
 import { postService } from "..";
+import { likeService } from "@/features/like";
 
 export class PostController {
   createPost = async (req: Request, res: Response, next: NextFunction) => {
@@ -59,8 +60,18 @@ export class PostController {
         validationResult.data
       );
 
+      const postsWithLikes = await Promise.all(
+        posts.map(async (post) => {
+          const { liked } = await likeService.checkLikeStatus(
+            req.user!.id,
+            post.id
+          );
+          return { ...post, isLikedL: liked };
+        })
+      );
+
       res.status(200).json({
-        posts,
+        posts: postsWithLikes,
         meta: {
           total,
           totalPages,
@@ -89,7 +100,9 @@ export class PostController {
         throw new NotFoundError("Post not found");
       }
 
-      res.status(200).json({ post });
+      const { liked } = await likeService.checkLikeStatus(req.user.id, id);
+
+      res.status(200).json({ ...post, isLiked: liked });
 
       return;
     } catch (error) {
