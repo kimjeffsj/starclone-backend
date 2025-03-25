@@ -11,6 +11,7 @@ import {
 import { User } from "./User.entity";
 import { Media } from "./Media.entity";
 import { Like } from "./Like.entity";
+import { Comment } from "./Comment.entity";
 
 @Entity("posts")
 export class Post {
@@ -31,6 +32,9 @@ export class Post {
 
   @OneToMany(() => Like, (like) => like.post)
   likes!: Like[];
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments!: Comment[];
 
   @Column({ default: 0 })
   likeCount!: number;
