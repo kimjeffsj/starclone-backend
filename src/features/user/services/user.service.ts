@@ -39,13 +39,12 @@ export class UserService {
       user.fullName = profileData.fullName;
     }
 
-    // TODO: No idea why its giving me error
     if (profileData.bio !== undefined) {
-      user.bio = profileData.bio as string;
+      user.bio = profileData.bio ?? undefined;
     }
 
     if (profileData.website !== undefined) {
-      user.website = profileData.website as string;
+      user.website = profileData.website ?? undefined;
     }
 
     // Save updated user
