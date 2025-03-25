@@ -16,6 +16,7 @@ import { mediaRouter } from "./features/media";
 import { likeRouter } from "./features/like";
 import { commentRouter } from "./features/comment";
 import { followRouter } from "./features/follow";
+import { userRouter } from "./features/user";
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use("/api/media", mediaRouter);
 app.use("/api/likes", likeRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/follows", followRouter);
+app.use("/api/users", userRouter);
 
 // Base routes
 app.get("/", (req, res) => {
