@@ -11,6 +11,7 @@ import * as bcrypt from "bcryptjs";
 import { Post } from "./Post.entity";
 import { Like } from "./Like.entity";
 import { Comment } from "./Comment.entity";
+import { Follow } from "./Follow.entity";
 
 @Entity("users")
 export class User {
@@ -54,6 +55,12 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments!: Comment[];
+
+  @OneToMany(() => Follow, (follow) => follow.follower)
+  following!: Follow[];
+
+  @OneToMany(() => Follow, (follow) => follow.follower)
+  followers!: Follow[];
 
   @CreateDateColumn()
   createdAt!: Date;
