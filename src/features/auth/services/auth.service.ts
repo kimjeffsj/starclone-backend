@@ -13,6 +13,7 @@ import {
 } from "@/utils/errors.utils";
 import * as bcrypt from "bcryptjs";
 import generateToken, { logout } from "@/utils/generateToken.utils";
+import { ILike } from "typeorm";
 
 export class AuthService {
   private userRepository = AppDataSource.getRepository(User);
@@ -60,8 +61,8 @@ export class AuthService {
     // Find user with email or username
     const user = await this.userRepository.findOne({
       where: [
-        { email: credentials.emailOrUsername },
-        { username: credentials.emailOrUsername },
+        { email: ILike(credentials.emailOrUsername) },
+        { username: ILike(credentials.emailOrUsername) },
       ],
     });
 
