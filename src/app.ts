@@ -17,6 +17,7 @@ import { likeRouter } from "./features/like";
 import { commentRouter } from "./features/comment";
 import { followRouter } from "./features/follow";
 import { userRouter } from "./features/user";
+import { bookmarkRouter } from "./features/bookmark";
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ app.use("/api/likes", likeRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/follows", followRouter);
 app.use("/api/users", userRouter);
+app.use("/api/bookmarks", bookmarkRouter);
 
 // Base routes
 app.get("/", (req, res) => {
