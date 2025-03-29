@@ -2,6 +2,10 @@
 
 A RESTful API for an Instagram clone application built with **PERN stack** (Node.js, Express, TypeScript, and PostgreSQL).
 
+### 🔗 [Live Demo](https://starclone.vercel.app/)
+
+See the API in action with our frontend at https://starclone.vercel.app/
+
 ## Features
 
 - 👤 **User Authentication**: Register, login, JWT-based authentication
