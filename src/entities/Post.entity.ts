@@ -12,6 +12,7 @@ import { User } from "./User.entity";
 import { Media } from "./Media.entity";
 import { Like } from "./Like.entity";
 import { Comment } from "./Comment.entity";
+import { Bookmark } from "./Bookmark.entity";
 
 @Entity("posts")
 export class Post {
@@ -35,6 +36,9 @@ export class Post {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments!: Comment[];
+
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.post)
+  bookmarks!: Bookmark[];
 
   @Column({ default: 0 })
   likeCount!: number;
